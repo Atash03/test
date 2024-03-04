@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../config/axios";
+import { useData } from "../store/store";
 
-const Items = ({ data }: { data: any[] }) => {
+const Items = () => {
+  const { data } = useData();
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
@@ -11,8 +13,13 @@ const Items = ({ data }: { data: any[] }) => {
           action: "get_items",
           params: { ids: data },
         });
-        console.log(res);
-        setItems(res.data.result);
+        const uniqueItems = res.data.result.reduce((acc: any[], item: any) => {
+          if (!acc.some((i: any) => i.id === item.id)) {
+            acc.push(item);
+          }
+          return acc;
+        }, []);
+        setItems(uniqueItems);
       } catch (error) {
         console.log(error);
       }
@@ -21,22 +28,8 @@ const Items = ({ data }: { data: any[] }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const arr = [];
-    const seen = new Map();
-    items.forEach((item) => {
-      if (!seen.has(item.id)) {
-        seen.set(item.id, item);
-      }
-    });
-    for (let i of seen.values()) {
-      arr.push(i);
-    }
-    setItems(arr);
-  }, [items.length]);
-
   return (
-    <div className="grid grid-cols-3 gap-[20px] my-[40px]">
+    <div className="grid grid-cols-3 gap-[20px] mb-[40px]">
       {items.length > 0 &&
         items.map((item: any) => (
           <div
@@ -44,10 +37,24 @@ const Items = ({ data }: { data: any[] }) => {
             className="border border-blue-900 p-[20px] rounded-xl flex items-center"
           >
             <ul>
-              {item.brand && <li><span className="font-[800]">Brand: </span>{item.brand}</li>}
-              <li><span className="font-[800]">Product: </span>{item.product}</li>
-              <li><span className="font-[800]">Id: </span>{item.id}</li>
-              <li><span className="font-[800]">Price: </span>{item.price}$</li>
+              {item.brand && (
+                <li>
+                  <span className="font-[800]">Brand: </span>
+                  {item.brand}
+                </li>
+              )}
+              <li>
+                <span className="font-[800]">Product: </span>
+                {item.product}
+              </li>
+              <li>
+                <span className="font-[800]">Id: </span>
+                {item.id}
+              </li>
+              <li>
+                <span className="font-[800]">Price: </span>
+                {item.price}$
+              </li>
             </ul>
           </div>
         ))}

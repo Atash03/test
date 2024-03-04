@@ -1,23 +1,21 @@
 import axios from "axios";
 import { Md5 } from "ts-md5";
 
-const date = new Date();
+// Function to generate formatted date string
+function getFormattedDate() {
+  const date = new Date();
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+}
 
-const datePass = {
-  year: date.getUTCFullYear(),
-  month:
-    date.getUTCMonth() < 10
-      ? `0${date.getUTCMonth() + 1}`
-      : date.getUTCMonth() + 1,
-  date: date.getUTCDate() < 10 ? `0${date.getUTCDate()}` : date.getUTCDate(),
-};
-
-const fullDate = `${datePass.year}${datePass.month}${datePass.date}`;
-
+// Generate full date and auth password
+const fullDate = getFormattedDate();
 const authPass = Md5.hashStr(`Valantis_${fullDate}`);
 
 const axiosInstance = axios.create({
-  baseURL: `http://api.valantis.store:40000`,
+  baseURL: "http://api.valantis.store:40000",
   timeout: 10000,
   headers: { "X-Auth": authPass },
 });
