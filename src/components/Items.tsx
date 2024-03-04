@@ -47,7 +47,7 @@ const Items = ({ data }: { data: any[] }) => {
               {item.brand && <li><span className="font-[800]">Brand: </span>{item.brand}</li>}
               <li><span className="font-[800]">Product: </span>{item.product}</li>
               <li><span className="font-[800]">Id: </span>{item.id}</li>
-              <li><span className="font-[800]">Price: </span>{item.price}</li>
+              <li><span className="font-[800]">Price: </span>{item.price}$</li>
             </ul>
           </div>
         ))}
