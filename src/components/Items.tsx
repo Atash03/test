@@ -36,15 +36,18 @@ const Items = ({ data }: { data: any[] }) => {
   }, [items.length]);
 
   return (
-    <div className="flex flex-col gap-[20px]">
+    <div className="grid grid-cols-3 gap-[20px] my-[40px]">
       {items.length > 0 &&
         items.map((item: any) => (
-          <div key={item.id}>
+          <div
+            key={item.id}
+            className="border border-blue-900 p-[20px] rounded-xl flex items-center"
+          >
             <ul>
-              <li>{item.brand}</li>
-              <li>{item.product}</li>
-              <li>{item.id}</li>
-              <li>{item.price}</li>
+              {item.brand && <li><span className="font-[800]">Brand: </span>{item.brand}</li>}
+              <li><span className="font-[800]">Product: </span>{item.product}</li>
+              <li><span className="font-[800]">Id: </span>{item.id}</li>
+              <li><span className="font-[800]">Price: </span>{item.price}</li>
             </ul>
           </div>
         ))}

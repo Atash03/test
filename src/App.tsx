@@ -10,7 +10,7 @@ const App = () => {
       try {
         const res = await axiosInstance.post("/", {
           action: "get_ids",
-          params: { limit: 10 },
+          params: { limit: 50 },
         });
         console.log(res);
         setData(res.data.result);
@@ -22,7 +22,7 @@ const App = () => {
     fetchIds();
   }, []);
 
-  return <div>{data.length > 0 ? <Items data={data} /> : <p>No items</p>}</div>;
+  return <div className="container px-[40px] sm:px-[15px]">{data.length > 0 ? <Items data={data} /> : <p>Loading...</p>}</div>;
 };
 
 export default App;
