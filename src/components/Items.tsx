@@ -6,6 +6,7 @@ const Items = () => {
   const { data } = useData();
   const [items, setItems] = useState<any[]>([]);
 
+  // fetching actual information of products
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -13,6 +14,7 @@ const Items = () => {
           action: "get_items",
           params: { ids: data },
         });
+        // filtering duplication of ids
         const uniqueItems = res.data.result.reduce((acc: any[], item: any) => {
           if (!acc.some((i: any) => i.id === item.id)) {
             acc.push(item);
@@ -29,7 +31,7 @@ const Items = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-3 gap-[20px] mb-[40px]">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px] mb-[40px]">
       {items.length > 0 &&
         items.map((item: any) => (
           <div

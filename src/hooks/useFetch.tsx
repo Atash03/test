@@ -1,22 +1,16 @@
-import React, { useEffect } from "react";
 import { axiosInstance } from "../config/axios";
-import { useData, useLoading, useOffset } from "../store/store";
+import { useData, useLoading } from "../store/store";
 
 export const useFetch = () => {
   const { setData } = useData();
   const { setLoading } = useLoading();
-  const { offset } = useOffset();
 
-  const fetchIds = async () => {
+  const fetchIds = async (body: any) => {
     setLoading(false);
     setData([]);
     setLoading(true);
     try {
-      const res = await axiosInstance.post("/", {
-        action: "get_ids",
-        params: { offset: offset, limit: 50 },
-      });
-      console.log(res);
+      const res = await axiosInstance.post("/", body);
       setData(res.data.result);
     } catch (error) {
       console.log(error);

@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
-import Items from "./components/Items";
+import { useEffect } from "react";
 import Main from "./components/Main";
-import { axiosInstance } from "./config/axios";
 import { useFetch } from "./hooks/useFetch";
 import { useData, useLoading, useOffset } from "./store/store";
 
 const App = () => {
   const { data } = useData();
   const { loading } = useLoading();
+  const { offset } = useOffset();
   const { fetchIds } = useFetch();
 
+  // initial fetch
   useEffect(() => {
-    fetchIds();
+    fetchIds({
+      action: "get_ids",
+      params: { offset: offset, limit: 50 },
+    });
   }, []);
 
   return (
@@ -23,7 +26,7 @@ const App = () => {
           <p>Loading...</p>
         )
       ) : (
-        <div>Error</div>
+        <div>Error occured, please wait...</div>
       )}
     </div>
   );

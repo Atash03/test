@@ -17,6 +17,13 @@ interface OffsetType {
   prev: () => void;
 }
 
+interface FieldType {
+  fields: any[];
+  setField: (data: any[]) => void;
+  search: boolean;
+  setSearch: (value: boolean) => void;
+}
+
 export const useData = create<DataType>((set) => ({
   data: [],
   setData: (data) => set(() => ({ data: data })),
@@ -27,6 +34,7 @@ export const useLoading = create<LoadingType>((set) => ({
   setLoading: (arg) => set(() => ({ loading: arg })),
 }));
 
+// for the async call with state update
 const fetchIds = async () => {
   useLoading.getState().setLoading(false);
   useData.getState().setData([]);
@@ -36,7 +44,6 @@ const fetchIds = async () => {
       action: "get_ids",
       params: { offset: useOffset.getState().offset, limit: 50 },
     });
-    console.log(res);
     useData.getState().setData(res.data.result);
   } catch (error) {
     console.log(error);
@@ -55,4 +62,11 @@ export const useOffset = create<OffsetType>((set) => ({
     set((state) => ({ offset: state.offset - 50 }));
     await fetchIds();
   },
+}));
+
+export const useFields = create<FieldType>((set) => ({
+  fields: [],
+  setField: (data) => set(() => ({ fields: data })),
+  search: false,
+  setSearch: (value) => set(() => ({ search: value })),
 }));
