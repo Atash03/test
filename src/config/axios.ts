@@ -15,7 +15,7 @@ const fullDate = getFormattedDate();
 const authPass = Md5.hashStr(`Valantis_${fullDate}`);
 
 const axiosInstance = axios.create({
-  baseURL: "http://api.valantis.store:40000",
+  baseURL: "https://api.valantis.store:41000",
   timeout: 10000,
   headers: { "X-Auth": authPass },
 });
